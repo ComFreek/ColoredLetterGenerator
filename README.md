@@ -41,6 +41,17 @@ It's best explained by an example:<br />
     # Specify the path to your font file
     "font": "Gauge-Regular.ttf",
 
+    # You may optionally define this block
+    # This program tries to automatically choose the highest font size which
+    # fits into the bounding box specified above (width & height)
+    # It therefore searches through a default range (1 .. 500) which can be modified by the following options:
+    #
+    # WARNING: Specifying illogical values (e.g. end > start or start > width/height) will eventually result in a crash!
+    "fontSizeRange": {
+      "start": 1,
+      "end": 500
+    }
+
     # The letters
     "letters": [
         "1",
