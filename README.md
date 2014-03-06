@@ -66,6 +66,16 @@ It's best explained by an example:<br />
         "0"
     ],
 
+    # Background colors
+    # You need to specifiy one color at least (e.g. white as in the sample below)
+    "backgroundColors": [
+        [
+            255,
+            255,
+            255
+        ]
+    ],
+ 
     # The text colors you want to use (an array of an array of RGB values)
     "colors": [
         [
