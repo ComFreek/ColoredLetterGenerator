@@ -29,7 +29,8 @@ Path to destination folder: sample_output
 
 ### Writing configuration
 
-It's best explained by an example:
+It's best explained by an example:<br />
+(Note: lines starting with `#` are comments. You have to remove them before running this application since JSON doesn't support any kind of comments.)
 
 ```
 {   
