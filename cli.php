@@ -23,7 +23,12 @@ require_once('generator.php');
  *  		[255,0,0],
  *   		[0,255,0],
  *  		...
- *   	]
+ *   	],
+ *  	"backgroundColors": [
+ *  		[128, 128, 128],
+ *  		[230, 230, 230],
+ *  		...
+ *  	]
  * }
  * NOTE: this function also normalized the font path
  */
@@ -56,19 +61,27 @@ function genImages($options, $saveCallback) {
 	
 	$nrOfLetters = count($options['letters']);
 	$nrOfColors = count($options['colors']);
+	$nrOfBgColors = count($options['backgroundColors']);
 	for ($letterIdx = 0; $letterIdx < $nrOfLetters; $letterIdx++) {
 		$letter = $options['letters'][$letterIdx];
 	
 		for ($colorIdx = 0; $colorIdx < $nrOfColors; $colorIdx++) {
 			$color = $options['colors'][$colorIdx];
-		
-			$letterImg = $gen->makeLetter(
-				$letter,
-				['r' => $color[0], 'g' => $color[1], 'b' => $color[2]]
-			);
-			
-			$saveCallback($letterImg, $letter, $color, ['r' => 255, 'g' => 255, 'b' => 255]);
-			imagedestroy($letterImg);
+			$colorRGB = ['r' => $color[0], 'g' => $color[1], 'b' => $color[2]];
+
+			for ($bgColorIdx = 0; $bgColorIdx < $nrOfBgColors; $bgColorIdx++) {
+				$bgColor = $options['backgroundColors'][$bgColorIdx];
+				$bgColorRGB = ['r' => $bgColor[0], 'g' => $bgColor[1], 'b' => $bgColor[2]];
+
+				$letterImg = $gen->makeLetter(
+					$letter,
+					$colorRGB,
+					$bgColorRGB
+				);
+				
+				$saveCallback($letterImg, $letter, $color, $bgColorRGB);
+				imagedestroy($letterImg);
+			}
 		}
 	}
 }
