@@ -12,6 +12,10 @@ require_once('generator.php');
  * 		"width": 100,
  *  	"height": 100,
  *  	"font": "xyz.ttf",
+ *  	"fontSizeRange": {
+ *  		"start": 100,
+ *  		"end": 500
+ *  	},
  *  	"letters": [
  *  		"a","b","c",...
  *  	],
@@ -45,6 +49,10 @@ function readConfigFile($file) {
 function genImages($options, $saveCallback) {
 	$gen = new Generator(['width' => $options['width'], 'height' => $options['height']], $options['font']);
 	$letters = $options['letters'];
+	
+	if (isset($options['fontSizeRange'])) {
+		$gen->setFontSizeRange($options['fontSizeRange']['start'], $options['fontSizeRange']['end']);
+	}
 	
 	$nrOfLetters = count($options['letters']);
 	$nrOfColors = count($options['colors']);

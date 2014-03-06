@@ -30,6 +30,12 @@ class Generator {
 	private $font;
 	
 	/**
+	 * The range of font sizes in which the maximum fitting font size
+	 * Defaults to [1, 500]
+	 */
+	private $fontSizeRange = [1, 500];
+	
+	/**
 	 * @param array $letterSize Size of the graphics: ['width' => ..., 'height' => ...]
 	 * @param string $font Path to the font file (may be relative or absolute)
 	 */
@@ -37,16 +43,30 @@ class Generator {
 		$this->letterSize = $letterSize;
 		$this->font = $font;
 	}
+	
+	/**
+	 * Sets the range of font sizes in which the maximum fitting font size
+	 * will be searched.
+	 * @param integer $start
+	 * @param integer $end
+	 * @see Generator::$fontSizeRange
+	 */
+	public function setFontSizeRange($start, $end) {
+		$this->fontSizeRange = [$start, $end];
+	}
 
 	/**
 	 * Calculates the maximum font size for $letter which would still
 	 * fit into the bounding box (=$letterSize values)
 	 * @param string $letter
 	 * @return integer Font size
+	 * 
+	 * @see Generator::$fontSizeRange
+	 * @see Generator::setFontSizeRange()
 	 */
 	private function calcMaxSize($letter) {
 		$lastGoodSize = null;
-		for ($size=1; $size<500; $size++) {
+		for ($size=$this->fontSizeRange[0]; $size<$this->fontSizeRange[1]; $size++) {
 			$sizeData = imagettfbbox($size, 0, $this->font, $letter);
 			$dimension = getDimensionOfText($size, 0, $this->font, $letter);
 
