@@ -36,6 +36,19 @@ class Generator {
 	private $fontSizeRange = [1, 500];
 	
 	/**
+	 * Cache for letter font sizes and their exact (centered) position
+	 * @var array
+	 * Data structure:
+	 * [
+	 *  	'[letter]' => [
+	 *  		'fontSize' => '...',
+	 *  		'coords' => ['x' => ..., 'y' => ...]
+	 *  	]
+	 * ]
+	 */
+	private $letterCache = [];
+	
+	/**
 	 * @param array $letterSize Size of the graphics: ['width' => ..., 'height' => ...]
 	 * @param string $font Path to the font file (may be relative or absolute)
 	 */
@@ -104,17 +117,27 @@ class Generator {
 	 */
 	public function &makeLetter($letter, Array $color, $bgColor = ['r' => 255, 'g' => 255, 'b' => 255]) {
 		$img = imagecreatetruecolor($this->letterSize['width'], $this->letterSize['height']);
-		
-		$colorResource = imagecolorallocate($img, $color['r'], $color['g'], $color['b']);
 		$bgColorResource = imagecolorallocate($img, $bgColor['r'], $bgColor['g'], $bgColor['b']);
-		
-		$maxSize = $this->calcMaxSize($letter);
-		
-		$coords = $this->getCenteredCoords($letter, $maxSize);
-		
 		imagefill($img, 0, 0, $bgColorResource);
-		imagettftext($img, $maxSize, 0, $coords['x'], $coords['y'], $colorResource, $this->font, $letter);
 		
+		if (!isset($this->letterCache[$letter])) {
+			$maxSize = $this->calcMaxSize($letter);
+
+			$coords = $this->getCenteredCoords($letter, $maxSize);
+
+			$this->letterCache[$letter] = [
+				'coords' => $coords,
+				'fontSize' => $maxSize
+			];
+		}
+		
+		$coords = $this->letterCache[$letter]['coords'];
+		$fontSize = $this->letterCache[$letter]['fontSize'];
+
+		$colorResource = imagecolorallocate($img, $color['r'], $color['g'], $color['b']);
+
+		imagettftext($img, $fontSize, 0, $coords['x'], $coords['y'], $colorResource, $this->font, $letter);
+
 		return $img;
 	}
 }
