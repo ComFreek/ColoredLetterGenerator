@@ -15,7 +15,7 @@ CLI for producing graphics of specified letters in specified colors (and backgro
 
 1. Start a command line and run `cli.php`.
 
-2. Choose your configuration file. There two files already provided in the `samples` directory.
+2. Choose your configuration file. There are two files already provided in the `samples` directory.
 
 3. Type an arbitrary name for the output directory.
 
